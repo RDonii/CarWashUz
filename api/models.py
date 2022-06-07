@@ -25,7 +25,7 @@ class Schedule(models.Model):
     Sunday = models.BooleanField(default=False)
 
 class Car(models.Model):
-    number = models.CharField(verbose_name='Mashina raqami', unique=True, validators=car_number_validators)
+    number = models.CharField(max_length=8, verbose_name='Mashina raqami', unique=True, validators=car_number_validators)
     owner = models.OneToOneField(verbose_name='Mashina egasi', to=User, on_delete=models.CASCADE)
     bot_number = models.IntegerField(verbose_name='Telefon raqam', null=True, blank=True, unique=True)
     registrated = models.DateTimeField(verbose_name="Ro'yxatdan o'tgan sana", null=False, blank=False, auto_now_add=True)
@@ -34,14 +34,14 @@ class Car(models.Model):
         verbose_name = 'Mashina'
         verbose_name_plural = 'Mashinalar'
         indexes = [
-            models.Index(fields=['pk']),
+            models.Index(fields=['id']),
             models.Index(fields=['number'])
         ]
 
 class CarWash(models.Model):
-    name = models.CharField(verbose_name='Moyka nomi', null=False, blank=False, unique=True)
+    name = models.CharField(max_length=25, verbose_name='Moyka nomi', null=False, blank=False, unique=True)
     bot_number = models.IntegerField(verbose_name='Telefon raqam', null=True, blank=True, unique=True)
-    location = models.CharField(verbose_name='Manzil', null=False, blank=False)
+    location = models.CharField(max_length=50, verbose_name='Manzil', null=False, blank=False)
     latitude = models.IntegerField(null=True, blank=True)
     longitude = models.IntegerField(null=True, blank=True)
     price = models.IntegerField(verbose_name='Bugungi narx')
@@ -55,7 +55,7 @@ class CarWash(models.Model):
         verbose_name = 'Moyka'
         verbose_name_plural = 'Moykalar'
         indexes = [
-            models.Index(fields=['pk']),
+            models.Index(fields=['id']),
             models.Index(fields=['name']),
             models.Index(fields=['bot_number']),
         ]
@@ -81,6 +81,6 @@ class Wash(models.Model):
     car = models.ForeignKey(verbose_name='Mashina', to=Car, on_delete=models.PROTECT)
     created = models.DateTimeField(verbose_name='Yuvilgan vaqt', auto_now_add=True)
     price = models.IntegerField(verbose_name="Narx", null=False, blank=False)
-    status = models.CharField(verbose_name='Status', validators=wash_validators)
+    status = models.CharField(max_length=8, verbose_name='Status', validators=wash_validators)
     accepted = models.DateTimeField(verbose_name='Tasdiqlangan vaqt', null=True, blank=True)
     feedback = models.IntegerField(verbose_name="Baho", null=True, blank=True)
